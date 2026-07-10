@@ -1,0 +1,17 @@
+{
+  "name": "chaser",
+  "owner": {
+    "name": "Ken Caroly",
+    "email": "kencaroly@gmail.com"
+  },
+  "metadata": {
+    "description": "Chaser — réduis le coût de Claude Code (abonnement + clé API). 100% local, zéro cloud."
+  },
+  "plugins": [
+    {
+      "name": "chaser-lite",
+      "source": "./plugins/chaser-lite",
+      "description": "Audite le coût caché de Claude Code (tokens de prompt système re-envoyés à chaque tour) et dégonfle-le. Gratuit, 100% local, 0 dépendance. Version complète : Chaser Pro."
+    }
+  ]
+}
