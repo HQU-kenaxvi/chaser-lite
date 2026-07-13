@@ -30,17 +30,23 @@ Tout est local. Aucune donnée, aucune clé, aucun prompt ne quitte ta machine.
 Le régime n'écrit que dans `~/.claude/settings.json`, après sauvegarde, et se
 retire proprement.
 
-## Passer à la version complète — Chaser Pro
+## Passer à la version complète — Chaser Pro (~5× plus développé)
 
-Chaser Lite ne fait que l'audit + le régime de contexte. **Chaser Pro** ajoute :
+Chaser Lite est **volontairement bridé** : audit plafonné (échantillon de
+fournisseurs + 1 fonction intégrée) et régime limité à quelques règles.
+**Chaser Pro** est le moteur complet, ~5× plus développé :
 
-- **Moteur d'orchestration** : décompose un objectif, route vers le modèle le
-  moins cher (Haiku/Sonnet), Batch API −50 %, budget hard cap.
-- **Chat éco** + **cache 1h** + **handoff automatique** entre sessions + **mémoire
-  long terme**.
-- **Bouclier de sécurité** : bloque `rm -rf ~`, `curl | sh`, secret écrit en dur…
-- **Cockpit** : tes économies mesurées **en temps réel** sur tes vrais runs.
-- **Intelligence** : routage qui apprend, auto-tuning des réglages.
+- **Moteur d'orchestration** : décompose un objectif et route chaque étape vers
+  le modèle le moins cher (bandit LinTS + cascade FrugalGPT), Batch API −50 %,
+  Tier 0 local à 0 $, budget hard-cap.
+- **Économies PROUVÉES** : journal inviolable hash-chaîné + Merkle (RFC 6962) —
+  auditables, pas seulement estimées.
+- **Cache sémantique** + **fallback multi-fournisseurs** + **handoff automatique** +
+  **mémoire long terme en couches**.
+- **Bouclier de sécurité** (taint/CaMeL, anti-injection, lethal-trifecta) : bloque
+  `rm -rf ~`, `curl | sh`, secret écrit en dur…
+- **Intelligence auto-évolutive (GEPA)** : routage qui apprend, auto-tuning, et
+  **Cockpit temps réel** sur tes vrais runs.
 
 → **https://chaser-orchestrator.com** · kencaroly@gmail.com
 

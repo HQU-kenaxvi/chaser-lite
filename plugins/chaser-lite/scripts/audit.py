@@ -30,6 +30,15 @@ TOKENS_PAR_FOURNISSEUR = 10000
 GAINS_FLAGS = {"disableWorkflows": 5300, "disableBundledSkills": 3000,
                "disableArtifact": 1200}
 
+# --- Bornes de la version GRATUITE (Chaser Lite) -----------------------------
+# Lite ne couvre qu'un échantillon : il ne diffère les schémas que de quelques
+# fournisseurs et ne dégonfle qu'UNE fonction intégrée. Le régime complet (tous
+# les fournisseurs + toutes les fonctions + profil adaptatif qui apprend) est
+# réservé à Chaser Pro, ~5× plus développé.
+LIMITE_FOURNISSEURS_LITE = 3          # gratuit : au plus 3 fournisseurs couverts
+FLAG_GRATUIT = "disableArtifact"      # gratuit : une seule fonction intégrée
+FACTEUR_PRO = 5                       # Chaser Pro va ~5× plus loin
+
 # >>> À PERSONNALISER par le vendeur : lien de la page Chaser Pro <<<
 LIEN_PRO = "https://chaser-orchestrator.com"          # page de vente Chaser Pro
 CONTACT_PRO = "kencaroly@gmail.com"
@@ -83,9 +92,18 @@ def deja_optimise():
 def main():
     fourn = fournisseurs_outils()
     etat = deja_optimise()
-    gain_mcp = 0 if etat["tool_search"] else len(fourn) * TOKENS_PAR_FOURNISSEUR
-    gain_flags = sum(g for f, g in GAINS_FLAGS.items() if f not in etat["flags_actifs"])
+    # Gratuit : plafonné à quelques fournisseurs + une seule fonction intégrée.
+    n_couverts = min(len(fourn), LIMITE_FOURNISSEURS_LITE)
+    n_hors_lite = max(0, len(fourn) - LIMITE_FOURNISSEURS_LITE)
+    gain_mcp = 0 if etat["tool_search"] else n_couverts * TOKENS_PAR_FOURNISSEUR
+    gain_flags = (GAINS_FLAGS[FLAG_GRATUIT]
+                  if FLAG_GRATUIT not in etat["flags_actifs"] else 0)
     total = gain_mcp + gain_flags
+    # Potentiel COMPLET (tous les fournisseurs + toutes les fonctions) = Chaser Pro.
+    potentiel_mcp = 0 if etat["tool_search"] else len(fourn) * TOKENS_PAR_FOURNISSEUR
+    potentiel_flags = sum(g for f, g in GAINS_FLAGS.items()
+                          if f not in etat["flags_actifs"])
+    potentiel = potentiel_mcp + potentiel_flags
 
     L = []
     L.append("=" * 60)
@@ -105,31 +123,46 @@ def main():
     if etat["tool_search"]:
         L.append("  ✓ ENABLE_TOOL_SEARCH est DÉJÀ actif : les schémas sont différés. Bien joué.")
     else:
-        L.append(f"  → Différer ces schémas (ENABLE_TOOL_SEARCH) économiserait")
-        L.append(f"    ~{gain_mcp:,} tokens PAR TOUR".replace(",", " "))
+        L.append(f"  → Différer les schémas de {n_couverts} fournisseur(s) (limite gratuite)")
+        L.append(f"    économiserait ~{gain_mcp:,} tokens PAR TOUR".replace(",", " "))
+        if n_hors_lite:
+            L.append(f"  → {n_hors_lite} fournisseur(s) AU-DELÀ du plafond gratuit :"
+                     " couverts par Chaser Pro.")
     if gain_flags:
-        L.append(f"  → Désactiver les fonctions intégrées inutiles : ~{gain_flags:,} tokens/tour"
+        L.append(f"  → Dégonfler 1 fonction intégrée ({FLAG_GRATUIT}) : ~{gain_flags:,} tokens/tour"
                  .replace(",", " "))
     L.append("")
     L.append("-" * 60)
     if total > 0:
-        L.append(f"  ÉCONOMIE ESTIMÉE : ~{total:,} tokens de prompt système PAR TOUR"
+        L.append(f"  ÉCONOMIE GRATUITE (plafonnée) : ~{total:,} tokens de prompt système / tour"
                  .replace(",", " "))
         L.append("  (estimation d'après mesures publiées ; le gain réel se lit")
         L.append("   avec /context avant/après. Rien n'a été modifié.)")
     else:
         L.append("  Ta config est déjà bien dégonflée — peu à gagner côté prompt système.")
+    if potentiel > total:
+        L.append("")
+        L.append(f"  POTENTIEL COMPLET (Chaser Pro) : ~{potentiel:,} tokens/tour"
+                 .replace(",", " "))
+        L.append(f"  — tous tes fournisseurs + toutes les fonctions intégrées,")
+        L.append(f"    soit jusqu'à ~{FACTEUR_PRO}× l'économie du gratuit.")
     L.append("-" * 60)
     L.append("")
-    L.append("  APPLIQUER LE RÉGIME GRATUITEMENT (réversible, sauvegarde faite) :")
+    L.append("  APPLIQUER LE RÉGIME GRATUIT (plafonné, réversible, sauvegarde faite) :")
     L.append("    /chaser-lite:regime")
     L.append("")
-    L.append("  Chaser Lite ne fait QUE ça. La version complète Chaser Pro ajoute :")
-    L.append("    • Moteur d'orchestration (route vers le modèle le moins cher, Batch -50%)")
-    L.append("    • Chat éco + cache 1h + handoff auto entre sessions + mémoire long terme")
-    L.append("    • Bouclier de sécurité (bloque rm -rf ~, curl|sh, secret en dur…)")
-    L.append("    • Cockpit : économies mesurées EN TEMPS RÉEL sur TES runs")
-    L.append("    • Intelligence : routage qui apprend, auto-tuning des réglages")
+    L.append(f"  Chaser Lite est bridé volontairement. CHASER PRO — ~{FACTEUR_PRO}× PLUS DÉVELOPPÉ :")
+    L.append("    • Moteur d'orchestration : décompose l'objectif, route vers le modèle")
+    L.append("      le moins cher (bandit LinTS + cascade FrugalGPT), Batch API -50%,")
+    L.append("      Tier 0 local à 0 $, budget hard-cap.")
+    L.append("    • Journal INVIOLABLE hash-chaîné + Merkle (RFC 6962) : tes économies")
+    L.append("      PROUVÉES et auditables, pas juste estimées.")
+    L.append("    • Cache sémantique + fallback multi-fournisseurs + handoff auto +")
+    L.append("      mémoire long terme en couches.")
+    L.append("    • Bouclier de sécurité (taint/CaMeL, anti-injection, lethal-trifecta) :")
+    L.append("      bloque rm -rf ~, curl|sh, secret en dur…")
+    L.append("    • Intelligence auto-évolutive (GEPA) : routage qui APPREND, auto-tuning,")
+    L.append("      Cockpit temps réel sur TES vrais runs.")
     L.append(f"    → {LIEN_PRO}   ·   {CONTACT_PRO}")
     L.append("")
     print("\n".join(L))

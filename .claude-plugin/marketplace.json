@@ -11,7 +11,7 @@
     {
       "name": "chaser-lite",
       "source": "./plugins/chaser-lite",
-      "description": "Audite le coût caché de Claude Code (tokens de prompt système re-envoyés à chaque tour) et dégonfle-le. Gratuit, 100% local, 0 dépendance. Version complète : Chaser Pro."
+      "description": "Audite le coût caché de Claude Code (tokens de prompt système re-envoyés à chaque tour) et dégonfle-le. Gratuit, 100% local, 0 dépendance, volontairement bridé. Version complète ~5× plus développée : Chaser Pro (moteur d'orchestration, journal Merkle, cache sémantique, Bouclier de sécurité)."
     }
   ]
 }

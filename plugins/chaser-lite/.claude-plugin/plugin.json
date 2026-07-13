@@ -1,6 +1,6 @@
 {
   "name": "chaser-lite",
-  "description": "Réduis le coût de Claude Code : audite les tokens gaspillés à chaque tour et dégonfle le prompt système (régime de contexte). 100% local, zéro cloud, zéro dépendance. Gratuit — la version complète (moteur d'orchestration, chat éco, mémoire, Cockpit, Bouclier de sécurité) est Chaser Pro.",
+  "description": "Réduis le coût de Claude Code : audite les tokens gaspillés à chaque tour et dégonfle le prompt système (régime de contexte). 100% local, zéro cloud, zéro dépendance. Gratuit et volontairement bridé — la version complète, ~5× plus développée (moteur d'orchestration multi-modèles, journal Merkle inviolable, cache sémantique, mémoire long terme, Cockpit temps réel, Bouclier de sécurité), est Chaser Pro.",
   "version": "1.0.0",
   "author": {
     "name": "Ken Caroly",

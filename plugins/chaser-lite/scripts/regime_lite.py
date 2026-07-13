@@ -33,11 +33,18 @@ except (AttributeError, ValueError, OSError):
     pass
 
 ENV = {"ENABLE_TOOL_SEARCH": "1"}
-DENY = [
+# Profil complet (9 règles) — utilisé comme référence de ce que fait Chaser Pro.
+DENY_COMPLET = [
     "Read(**/node_modules/**)", "Read(**/dist/**)", "Read(**/build/**)",
     "Read(**/.next/**)", "Read(**/coverage/**)", "Read(**/*.lock)",
     "Read(**/*.min.js)", "Read(**/*.map)", "Read(**/*.pyc)",
 ]
+# GRATUIT (Chaser Lite) : bridé aux 3 règles les plus universelles. Le profil
+# complet + le régime adaptatif (deny appris par projet) sont réservés à Chaser
+# Pro, ~5× plus développé.
+DENY = DENY_COMPLET[:3]
+DENY_PRO = DENY_COMPLET[3:]          # couvert uniquement par Chaser Pro
+FACTEUR_PRO = 5
 
 
 def _settings():
@@ -141,6 +148,11 @@ def main():
         print("  Annuler à tout moment : /chaser-lite:regime retirer")
     else:
         print("  [DRY] Rien écrit. Relance avec --appliquer.")
+    print()
+    print(f"  Profil GRATUIT bridé : {len(DENY)} règles deny. CHASER PRO (~{FACTEUR_PRO}× plus)")
+    print(f"  ajoute {len(DENY_PRO)} règles de plus + un régime ADAPTATIF qui apprend les")
+    print("  gros fichiers de CHAQUE projet, le moteur d'orchestration, le journal")
+    print("  Merkle inviolable et le Bouclier de sécurité → https://chaser-orchestrator.com")
     return 0
 
 
