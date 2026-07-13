@@ -18,7 +18,7 @@ Après `/chaser-lite:regime`, **redémarre Claude Code** puis compare avec `/con
 ## Installation
 
 ```
-/plugin marketplace add caroly-chaser/chaser-lite     # (ton repo GitHub)
+/plugin marketplace add HQU-kenaxvi/chaser-lite     # (ton repo GitHub)
 /plugin install chaser-lite@chaser
 ```
 

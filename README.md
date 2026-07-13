@@ -14,13 +14,13 @@ reversible changes, zero dependencies (Python stdlib only).
 **Via the skills CLI (Claude Code, Cursor, and 20+ agents) :**
 
 ```
-npx skills add kencaroly/chaser-lite
+npx skills add HQU-kenaxvi/chaser-lite
 ```
 
 **Via the Claude Code plugin marketplace :**
 
 ```
-/plugin marketplace add kencaroly/chaser-lite
+/plugin marketplace add HQU-kenaxvi/chaser-lite
 /plugin install chaser-lite@chaser
 ```
 
