@@ -42,6 +42,6 @@ Chaser Lite ne fait que l'audit + le régime de contexte. **Chaser Pro** ajoute 
 - **Cockpit** : tes économies mesurées **en temps réel** sur tes vrais runs.
 - **Intelligence** : routage qui apprend, auto-tuning des réglages.
 
-→ **https://chaser.tools** · kencaroly@gmail.com
+→ **https://chaser-orchestrator.com** · kencaroly@gmail.com
 
 *© 2026 Ken Caroly. Chaser Lite est fourni gratuitement « en l'état ».*

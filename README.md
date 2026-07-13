@@ -1,45 +1,46 @@
-# Chaser — Marketplace de plugins Claude Code
+# Chaser Lite — cut the hidden cost of Claude Code
 
-Marketplace officiel de **Chaser**, l'outil qui réduit le coût de Claude Code
-(abonnement + clé API), 100 % local.
+Free tools from **Chaser** (https://chaser-orchestrator.com) that measure and
+shrink the token cost of your Claude Code setup. 100% local, read-only audit,
+reversible changes, zero dependencies (Python stdlib only).
 
-## Plugin disponible
+- **chaser-cost-audit** — measures the system-prompt tokens (MCP tool schemas,
+  plugins, built-ins) re-sent on EVERY turn, and what you can reclaim.
+- **chaser-context-diet** — applies the free, reversible "context diet"
+  (deferred tool loading + deny rules) to `settings.json`, with automatic backup.
 
-- **chaser-lite** — audit du coût caché + régime de contexte. Gratuit.
+## Install
 
-## Installation (pour les utilisateurs)
+**Via the skills CLI (Claude Code, Cursor, and 20+ agents) :**
 
 ```
-/plugin marketplace add caroly-chaser/chaser-lite
+npx skills add kencaroly/chaser-lite
+```
+
+**Via the Claude Code plugin marketplace :**
+
+```
+/plugin marketplace add kencaroly/chaser-lite
 /plugin install chaser-lite@chaser
 ```
 
-*(remplace `caroly-chaser/chaser-lite` par le chemin de ton dépôt GitHub une fois publié)*
+The plugin exposes `/chaser-lite:audit` and `/chaser-lite:regime` (+ `retirer`
+to undo).
 
 ## Structure
 
 ```
-.claude-plugin/
-  marketplace.json          ← catalogue (liste chaser-lite)
-plugins/
-  chaser-lite/
-    .claude-plugin/plugin.json
-    skills/audit/SKILL.md    ← /chaser-lite:audit
-    skills/regime/SKILL.md   ← /chaser-lite:regime
-    scripts/audit.py         ← audit local (lecture seule)
-    scripts/regime_lite.py   ← régime réversible
-    README.md
+skills/                          ← standalone skills (skills.sh / npx skills)
+  chaser-cost-audit/SKILL.md + audit.py
+  chaser-context-diet/SKILL.md + regime_lite.py
+.claude-plugin/marketplace.json  ← plugin marketplace catalogue
+plugins/chaser-lite/             ← Claude Code plugin (same tools, /commands)
 ```
 
-## Publier
+## Honest by design
 
-1. `git init && git add . && git commit -m "Chaser Lite v1"`
-2. Créer un repo GitHub public (ex. `caroly-chaser/chaser-lite`) et `git push`.
-3. Les utilisateurs ajoutent le marketplace avec la commande ci-dessus.
-4. (Optionnel) Soumettre au marketplace communautaire :
-   https://platform.claude.com/plugins/submit
-
-## À personnaliser avant publication
-
-- `plugins/chaser-lite/scripts/audit.py` : `LIEN_PRO` (ton lien de vente Chaser Pro).
-- README : le chemin du dépôt GitHub.
+Numbers are labeled as estimates, nothing is ever sent off your machine, and
+every change is reversible with one command. The full product — orchestration
+engine that routes work to cheaper models, budget guard, eco chat, persistent
+memory, Cockpit dashboard, security Shield — is **Chaser Pro** :
+https://chaser-orchestrator.com · kencaroly@gmail.com
