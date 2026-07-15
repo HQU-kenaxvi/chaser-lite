@@ -40,7 +40,7 @@ FLAG_GRATUIT = "disableArtifact"      # gratuit : une seule fonction intégrée
 FACTEUR_PRO = 5                       # Chaser Pro va ~5× plus loin
 
 # >>> À PERSONNALISER par le vendeur : lien de la page Chaser Pro <<<
-LIEN_PRO = "https://chaser-orchestrator.com"          # page de vente Chaser Pro
+LIEN_PRO = "https://chaser-orchestrator.com/en.html"          # page de vente Chaser Pro
 CONTACT_PRO = "kencaroly@gmail.com"
 
 

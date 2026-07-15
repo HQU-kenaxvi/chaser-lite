@@ -1,6 +1,6 @@
 # Chaser Lite — cut the hidden cost of Claude Code
 
-Free tools from **Chaser** (https://chaser-orchestrator.com) that measure and
+Free tools from **Chaser** (https://chaser-orchestrator.com/en.html) that measure and
 shrink the token cost of your Claude Code setup. 100% local, read-only audit,
 reversible changes, zero dependencies (Python stdlib only).
 
@@ -66,4 +66,4 @@ engine:
 - **Self-evolving intelligence (GEPA)** — a router that *learns*, auto-tuning, and
   a real-time Cockpit on your actual runs.
 
-→ **https://chaser-orchestrator.com** · kencaroly@gmail.com
+→ **https://chaser-orchestrator.com/en.html** · kencaroly@gmail.com

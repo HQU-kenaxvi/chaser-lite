@@ -152,7 +152,7 @@ def main():
     print(f"  Profil GRATUIT bridé : {len(DENY)} règles deny. CHASER PRO (~{FACTEUR_PRO}× plus)")
     print(f"  ajoute {len(DENY_PRO)} règles de plus + un régime ADAPTATIF qui apprend les")
     print("  gros fichiers de CHAQUE projet, le moteur d'orchestration, le journal")
-    print("  Merkle inviolable et le Bouclier de sécurité → https://chaser-orchestrator.com")
+    print("  Merkle inviolable et le Bouclier de sécurité → https://chaser-orchestrator.com/en.html")
     return 0
 
 

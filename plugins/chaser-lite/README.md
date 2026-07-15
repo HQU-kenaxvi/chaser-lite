@@ -48,6 +48,6 @@ fournisseurs + 1 fonction intégrée) et régime limité à quelques règles.
 - **Intelligence auto-évolutive (GEPA)** : routage qui apprend, auto-tuning, et
   **Cockpit temps réel** sur tes vrais runs.
 
-→ **https://chaser-orchestrator.com** · kencaroly@gmail.com
+→ **https://chaser-orchestrator.com/en.html** · kencaroly@gmail.com
 
 *© 2026 Ken Caroly. Chaser Lite est fourni gratuitement « en l'état ».*
