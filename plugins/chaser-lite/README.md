@@ -15,6 +15,19 @@ le prompt système **à chaque tour**. Chaser Lite le mesure et le dégonfle.
 
 Après `/chaser-lite:regime`, **redémarre Claude Code** puis compare avec `/context`.
 
+## Skills bonus (qualité de dev)
+
+Deux skills éprouvés, chargés **au bon moment** par le modèle (ou invocables à la
+main). Ils ne modifient aucun réglage et n'envoient rien — ils orientent seulement
+le raisonnement de Claude :
+
+| Skill | Ce qu'il fait |
+|---|---|
+| `systematic-debugging` | Face à un bug/échec de test, impose de **trouver la cause racine avant tout correctif** (4 phases, loi de fer « pas de fix sans investigation »). Fini les rustines qui masquent le problème. |
+| `verification-before-completion` | Avant d'annoncer « c'est bon / corrigé / ça passe », impose de **relancer la vérification et lire la sortie**. Preuve avant tout claim. |
+
+*Adaptés de [obra/superpowers](https://github.com/obra/superpowers) (MIT) — voir `THIRD-PARTY-NOTICES.md`.*
+
 ## Installation
 
 ```
@@ -50,4 +63,5 @@ fournisseurs + 1 fonction intégrée) et régime limité à quelques règles.
 
 → **https://chaser-orchestrator.com/en.html** · kencaroly@gmail.com
 
-*© 2026 Ken Caroly. Chaser Lite est fourni gratuitement « en l'état ».*
+*© 2026 Ken Caroly. Chaser Lite est fourni gratuitement « en l'état ». Composants
+tiers sous licence MIT : voir `THIRD-PARTY-NOTICES.md`.*
