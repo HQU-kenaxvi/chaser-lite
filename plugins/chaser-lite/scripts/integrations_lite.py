@@ -15,10 +15,13 @@ Chaser Lite — Intégrations multi-agents (gratuit, réversible)
     gemini   -> .gemini/settings.json, événement BeforeTool (matcher outil
                 shell). Exit 2 + raison sur stderr = même patron.
 
-  FICHIERS DE RÈGLES (l'agent lit des instructions) :
-    windsurf -> .windsurfrules        cline -> .clinerules
-    codex    -> AGENTS.md             kimi  -> AGENTS.md
-    agents   -> AGENTS.md générique
+  FICHIERS DE RÈGLES (l'agent lit des instructions) — 33 agents au total :
+    chemins propres  : copilot (.github/copilot-instructions.md), windsurf
+      (.windsurfrules), cline (.clinerules), roo, kilocode, antigravity,
+      amazonq, continue, goose, claude (CLAUDE.md)...
+    standard ouvert  : AGENTS.md (lu nativement par Codex, Aider, Zed, Warp,
+      Jules, OpenCode, Factory... un seul fichier les couvre — dédup auto).
+    Voir `--liste` pour l'inventaire complet, `--tous` pour tout poser.
 
 Tout est posé DANS LE PROJET COURANT, entre marqueurs « Chaser Lite », donc
 retirable proprement (`--retirer <agent>`). Rien d'envoyé nulle part.
@@ -174,6 +177,10 @@ def poser_cursor(retirer=False):
         entrees.append({
             "command": f'python "{os.path.join(ICI, "integrations_lite.py")}" --porte-cursor',
             "timeout": 10})
+    if retirer and not hooks.get("beforeShellExecution") and not d.get("hooks"):
+        if os.path.exists(chemin) and set(d) <= {"version", "hooks"}:
+            os.remove(chemin)  # coquille vide : aucune trace
+            return True
     os.makedirs(dossier, exist_ok=True)
     json.dump(d, open(chemin, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
     return True
@@ -205,19 +212,65 @@ def poser_gemini(retirer=False):
             "command": f'python "{os.path.join(ICI, "integrations_lite.py")}" --porte-gemini',
             "matcher": "run_shell_command|run_terminal_command|shell|execute.*",
             "timeout": 10000})
+    if retirer and not hooks.get("BeforeTool") and not d.get("hooks"):
+        if os.path.exists(chemin) and set(d) <= {"hooks"}:
+            os.remove(chemin)
+            return True
     os.makedirs(dossier, exist_ok=True)
     json.dump(d, open(chemin, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
     return True
 
 
+def _fichier(chemin):
+    """Poseur/retireur de bloc de règles à un chemin donné (crée le dossier)."""
+    def op(retirer=False):
+        if retirer:
+            return _retirer_bloc(chemin)
+        d = os.path.dirname(chemin)
+        if d:
+            os.makedirs(d, exist_ok=True)
+        return _poser_bloc(chemin)
+    return op
+
+
+# Registre des agents. Trois niveaux d'intégration, annoncés honnêtement :
+#   HOOK    = contrôle réel (la commande verbeuse nue est interceptée).
+#   PROPRE  = fichier de règles au chemin SPÉCIFIQUE de cet agent (vérifié).
+#   AGENTS  = convention AGENTS.md, standard ouvert 2026 (lu nativement par la
+#             majorité des agents) — un SEUL fichier couvre tous ces agents ;
+#             l'efficacité dépend de l'agent qui honore la convention.
+# `_poser_bloc` est idempotent -> poser AGENTS.md pour 20 agents ne l'écrit
+# qu'UNE fois (dédup automatique). Aucun nom inventé : agents réels de 2026.
+_AG = lambda: _fichier("AGENTS.md")
 AGENTS = {
-    "cursor": ("hook beforeShellExecution (deny-with-suggestion)", poser_cursor),
-    "gemini": ("hook BeforeTool (exit 2 + suggestion)", poser_gemini),
-    "windsurf": (".windsurfrules", lambda r=False: (_retirer_bloc if r else _poser_bloc)(".windsurfrules")),
-    "cline": (".clinerules", lambda r=False: (_retirer_bloc if r else _poser_bloc)(".clinerules")),
-    "codex": ("AGENTS.md", lambda r=False: (_retirer_bloc if r else _poser_bloc)("AGENTS.md")),
-    "kimi": ("AGENTS.md", lambda r=False: (_retirer_bloc if r else _poser_bloc)("AGENTS.md")),
-    "agents": ("AGENTS.md générique", lambda r=False: (_retirer_bloc if r else _poser_bloc)("AGENTS.md")),
+    # -- HOOKS (contrôle fort) --
+    "cursor":      ("HOOK .cursor/hooks.json (deny-with-suggestion)", poser_cursor),
+    "gemini":      ("HOOK .gemini/settings.json (BeforeTool, exit 2)", poser_gemini),
+    # -- Fichiers de règles au chemin PROPRE (vérifiés) --
+    "claude":      ("CLAUDE.md", _fichier("CLAUDE.md")),
+    "copilot":     (".github/copilot-instructions.md",
+                    _fichier(os.path.join(".github", "copilot-instructions.md"))),
+    "windsurf":    (".windsurfrules", _fichier(".windsurfrules")),
+    "cline":       (".clinerules", _fichier(".clinerules")),
+    "roo":         (".roo/rules/", _fichier(os.path.join(".roo", "rules", "chaser-lite.md"))),
+    "kilocode":    (".kilocode/rules/", _fichier(os.path.join(".kilocode", "rules", "chaser-lite.md"))),
+    "antigravity": (".agents/rules/", _fichier(os.path.join(".agents", "rules", "chaser-lite.md"))),
+    "amazonq":     (".amazonq/rules/", _fichier(os.path.join(".amazonq", "rules", "chaser-lite.md"))),
+    "continue":    (".continue/rules/", _fichier(os.path.join(".continue", "rules", "chaser-lite.md"))),
+    "goose":       (".goosehints", _fichier(".goosehints")),
+    "cursor-rules": (".cursor/rules/ (legacy)",
+                     _fichier(os.path.join(".cursor", "rules", "chaser-lite.mdc"))),
+    # -- Convention AGENTS.md (standard ouvert 2026, un fichier les couvre) --
+    "codex":     ("AGENTS.md", _AG()),   "aider":    ("AGENTS.md", _AG()),
+    "zed":       ("AGENTS.md", _AG()),   "kimi":     ("AGENTS.md", _AG()),
+    "opencode":  ("AGENTS.md", _AG()),   "factory":  ("AGENTS.md", _AG()),
+    "jules":     ("AGENTS.md", _AG()),   "warp":     ("AGENTS.md", _AG()),
+    "void":      ("AGENTS.md", _AG()),   "trae":     ("AGENTS.md", _AG()),
+    "pearai":    ("AGENTS.md", _AG()),   "bolt":     ("AGENTS.md", _AG()),
+    "augment":   ("AGENTS.md", _AG()),   "crush":    ("AGENTS.md", _AG()),
+    "openhands": ("AGENTS.md", _AG()),   "cody":     ("AGENTS.md", _AG()),
+    "qodo":      ("AGENTS.md", _AG()),   "phind":    ("AGENTS.md", _AG()),
+    "replit":    ("AGENTS.md", _AG()),   "agents":   ("AGENTS.md générique", _AG()),
 }
 
 
@@ -228,10 +281,18 @@ def main():
     if "--porte-gemini" in argv:
         return porte_gemini()
     cibles = [a for a in argv if a in AGENTS]
-    if "--liste" in argv or not cibles:
-        print("Agents supportés :", ", ".join(sorted(AGENTS)))
-        print("Usage : python integrations_lite.py <agent> [--retirer]")
-        print("(posé dans le PROJET COURANT, réversible, marqueurs Chaser Lite)")
+    if "--tous" in argv:
+        cibles = list(AGENTS)
+    if "--liste" in argv or (not cibles and "--tous" not in argv):
+        hooks = [a for a, (_, p) in AGENTS.items() if callable(p) and p.__name__.startswith("poser_")]
+        print(f"Agents supportés : {len(AGENTS)} "
+              f"({len(hooks)} par HOOK, le reste par fichier de règles)")
+        print("  " + ", ".join(sorted(AGENTS)))
+        print("\nUsage : python integrations_lite.py <agent...|--tous> [--retirer]")
+        print("Posé dans le PROJET COURANT, réversible, marqueurs Chaser Lite.")
+        print("Note : AGENTS.md est le standard ouvert 2026 — un fichier couvre")
+        print("beaucoup d'agents (Codex, Aider, Zed, Warp…) ; les HOOKS (Cursor,")
+        print("Gemini) donnent le contrôle le plus fort.")
         return 0
     retirer = "--retirer" in argv
     for a in cibles:
