@@ -1,11 +1,21 @@
 {
   "name": "chaser-lite",
-  "description": "Cut the cost of Claude Code: audit the tokens wasted on every turn and shrink the system prompt (context diet). 100% local, zero cloud, zero dependencies. Free and deliberately capped — the full version, ~5x more developed (multi-model orchestration engine, tamper-proof Merkle journal, semantic cache, long-term memory, real-time Cockpit, Security Shield), is Chaser Pro: chaser-orchestrator.com/en.html",
-  "version": "1.1.0",
+  "description": "Cut the cost of Claude Code: audit wasted tokens, shrink the system prompt, and compress verbose command outputs (tests, lint, git) before they enter your context — error signals always preserved. 100% local, zero cloud, zero dependencies. Free and deliberately capped — the full version, ~5x more developed (multi-model orchestration engine, tamper-proof Merkle journal, semantic cache, long-term memory, real-time Cockpit, Security Shield), is Chaser Pro: chaser-orchestrator.com/en.html",
+  "version": "1.2.0",
   "author": {
     "name": "Ken Caroly",
     "email": "kencaroly@gmail.com"
   },
-  "keywords": ["cost", "tokens", "savings", "context", "optimization", "claude-code", "debugging", "verification", "quality"],
+  "keywords": [
+    "cost",
+    "tokens",
+    "savings",
+    "context",
+    "optimization",
+    "claude-code",
+    "debugging",
+    "verification",
+    "quality"
+  ],
   "license": "Proprietary (free tier)"
 }
