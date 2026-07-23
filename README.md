@@ -11,6 +11,15 @@ reversible changes, zero dependencies (Python stdlib only).
 - **chaser-context-diet** — applies the free, reversible "context diet"
   (deferred tool loading + a capped set of deny rules) to `settings.json`, with
   automatic backup.
+- **output compressor** *(new, v1.2+)* — verbose command outputs (tests, lint,
+  git, find/tree) are compressed BEFORE entering your context. Error signals
+  (FAILED, errors, warnings) are ALWAYS preserved — no blind truncation.
+  `rtk`-compatible habits: the `rtk ` prefix is absorbed and replaced.
+- **33 coding agents supported** *(new, v1.4)* — one command extends the token
+  discipline to Cursor & Gemini CLI (official hooks, deny-with-suggestion) and
+  31 more via agent rules files and the open `AGENTS.md` standard (Codex,
+  Copilot, Windsurf, Cline, Aider, Zed, Warp, Amazon Q…). Per-project,
+  traceless removal.
 
 > Chaser Lite is **deliberately throttled** so it stays simple and safe. The
 > economy and the toolset are limited on purpose — **Chaser Pro is ~5× more
