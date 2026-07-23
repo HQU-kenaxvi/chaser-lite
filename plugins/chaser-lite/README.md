@@ -12,6 +12,7 @@ le prompt système **à chaque tour**. Chaser Lite le mesure et le dégonfle.
 |---|---|
 | `/chaser-lite:audit` | Mesure, sur ta machine, combien de tokens de prompt système sont gaspillés à chaque tour, et l'économie possible. **Lecture seule, rien n'est modifié, rien n'est envoyé.** |
 | `/chaser-lite:regime` | Applique le régime de contexte (ENABLE_TOOL_SEARCH + deny des gros fichiers) dans `~/.claude/settings.json`. **Sauvegarde automatique, réversible** via `/chaser-lite:regime retirer`. |
+| `/chaser-lite:integrer` | Étend le compresseur aux **autres agents** : Cursor & Gemini CLI (hooks officiels, deny-with-suggestion), Windsurf, Cline, Codex, Kimi (fichiers de règles). Posé par projet, **réversible** via `/chaser-lite:integrer retirer`. |
 | `/chaser-lite:compresser` | Branche le **compresseur de sorties** : les commandes verbeuses (tests, lint, git, find/tree) sont compressées avant d'entrer dans le contexte — **signaux d'erreur préservés, jamais de troncature aveugle**. Habitudes `rtk` compatibles (préfixe absorbé). Réversible via `/chaser-lite:compresser retirer`. |
 
 Après `/chaser-lite:regime`, **redémarre Claude Code** puis compare avec `/context`.
